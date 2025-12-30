@@ -1,26 +1,95 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #0f1419;
+  --primary: #00d4ff;
+  --foreground: #f8f8f2;
+  --secondary: #8be9fd;
+  --temp-dark: #0f1419;
+  --temp-primary: #00d4ff;
+  --temp-secondary: #8be9fd;
+  --temp-text: #f8f8f2;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-temp-dark: var(--temp-dark);
+  --color-temp-primary: var(--temp-primary);
+  --color-temp-secondary: var(--temp-secondary);
+  --color-temp-text: var(--temp-text);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
+  --animate-gradient: gradient 3s ease infinite;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@keyframes gradient {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
   }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+}
+
+.text-primary {
+  color: var(--primary);
+}
+
+.text-secondary {
+  color: var(--secondary);
+}
+
+.bg-temp-dark {
+  background-color: var(--temp-dark);
+}
+
+.text-temp-primary {
+  color: var(--temp-primary);
+}
+
+.bg-temp-primary {
+  background-color: var(--temp-primary);
+}
+
+.text-temp-secondary {
+  color: var(--temp-secondary);
+}
+
+.bg-temp-secondary {
+  background-color: var(--temp-secondary);
+}
+
+.text-temp-text {
+  color: var(--temp-text);
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--temp-dark);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--temp-secondary);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--temp-primary);
+}
+
+::selection {
+  background-color: var(--temp-primary);
+  color: var(--temp-dark);
 }
