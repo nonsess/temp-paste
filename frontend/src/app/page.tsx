@@ -1,65 +1,116 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
+import { useState, useRef } from "react";
+
+import Container from "@/components/layout/Container";
+import Button from "@/components/ui/Button";
+import TextArea from "@/components/ui/TextArea";
+import TTLSelector from "@/components/ui/TTLSelector";
+
+export default function HomePage() {
+  const [ttl, setTtl] = useState(60);
+  const [text, setText] = useState("");
+  const textAreaRef = useRef<HTMLTextAreaElement>(null);
+
+  const handleClear = () => {
+    setText("");
+    if (textAreaRef.current) {
+      textAreaRef.current.focus();
+    }
+  };
+
+  const handleCreate = () => {
+    if (!text.trim()) {
+      console.log("Ошибка: текст не может быть пустым");
+      alert("Введите текст заметки");
+      return;
+    }
+
+    console.log("=== Создание заметки ===");
+    console.log("TTL (минуты):", ttl);
+    console.log("Текст:", text);
+    console.log("Длина текста:", text.length, "символов");
+    console.log("=======================");
+  };
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <main className="py-8">
+      <Container>
+        <div className="text-center mb-12">
+          <h2 className="text-4xl md:text-5xl font-bold mb-4">
+            <span className="bg-linear-to-r from-temp-primary via-temp-secondary to-temp-primary bg-clip-text text-transparent bg-size-[200%] animate-gradient">
+              Временные заметки
+            </span>
+          </h2>
+          <p className="text-xl text-temp-text/70 max-w-3xl mx-auto">
+            Создайте заметку, установите время жизни от 1 минуты до 24 часов, и
+            она автоматически исчезнет. Без регистрации, анонимно, безопасно.
           </p>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+
+        <div className="max-w-4xl mx-auto bg-temp-dark/50 backdrop-blur-sm rounded-2xl border border-temp-primary/20 p-6 md:p-8">
+          <div className="grid md:grid-cols-3 gap-8">
+            <div className="md:col-span-1 space-y-6">
+              <div>
+                <h3 className="text-lg font-semibold text-temp-text mb-4">
+                  Настройки заметки
+                </h3>
+
+                <TTLSelector
+                  value={ttl}
+                  onChange={(minutes) => setTtl(minutes)}
+                />
+              </div>
+            </div>
+
+            <div className="md:col-span-2">
+              <TextArea
+                ref={textAreaRef}
+                label="Содержимое заметки"
+                placeholder="Вставьте ваш текст, код, конфигурацию, пароль или любое содержимое, которое должно исчезнуть через заданное время..."
+                value={text}
+                onChange={(e) => setText(e.target.value)}
+                rows={12}
+                maxChar={7000}
+                currentLength={text.length}
+                className="font-mono text-sm"
+              />
+
+              <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mt-6 pt-6 border-t border-temp-primary/10">
+                <div className="text-sm text-temp-secondary/70">
+                  {text.length > 0 && (
+                    <>
+                      Символов:{" "}
+                      <span className="text-temp-primary">{text.length}</span>
+                      {text.length >= 7000 && (
+                        <span className="ml-2 text-red-400">⚠ Лимит!</span>
+                      )}
+                    </>
+                  )}
+                </div>
+
+                <div className="flex gap-3">
+                  <Button
+                    variant="secondary"
+                    onClick={handleClear}
+                    disabled={text.length === 0}
+                  >
+                    Очистить
+                  </Button>
+                  <Button
+                    variant="primary"
+                    size="lg"
+                    onClick={handleCreate}
+                    disabled={text.length === 0}
+                  >
+                    Создать заметку
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-      </main>
-    </div>
+      </Container>
+    </main>
   );
 }
