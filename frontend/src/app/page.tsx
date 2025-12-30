@@ -1,13 +1,16 @@
 "use client";
 
 import { useState, useRef } from "react";
+import { useRouter } from "next/navigation";
 
 import Container from "@/components/layout/Container";
 import Button from "@/components/ui/Button";
 import TextArea from "@/components/ui/TextArea";
 import TTLSelector from "@/components/ui/TTLSelector";
+import { pasteService } from "@/services/paste.service";
 
 export default function HomePage() {
+  const router = useRouter();
   const [ttl, setTtl] = useState(60);
   const [text, setText] = useState("");
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
@@ -19,18 +22,15 @@ export default function HomePage() {
     }
   };
 
-  const handleCreate = () => {
+  const handleCreate = async() => {
     if (!text.trim()) {
-      console.log("Ошибка: текст не может быть пустым");
       alert("Введите текст заметки");
       return;
     }
 
-    console.log("=== Создание заметки ===");
-    console.log("TTL (минуты):", ttl);
-    console.log("Текст:", text);
-    console.log("Длина текста:", text.length, "символов");
-    console.log("=======================");
+    const paste = await pasteService.createPaste({ttl, text})
+
+    router.push(`/pastes/${paste.id}`);
   };
 
   return (

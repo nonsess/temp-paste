@@ -4,14 +4,14 @@ import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Container from "@/components/layout/Container";
 import Button from "@/components/ui/Button";
-import { Paste } from "@/types/paste";
+import { PasteResponse, pasteService } from "@/services/paste.service";
 
 export default function PastePage() {
   const params = useParams();
   const router = useRouter();
   const pasteId = params.paste_id as string;
 
-  const [paste, setPaste] = useState<Paste | null>(null);
+  const [paste, setPaste] = useState<PasteResponse | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -21,48 +21,9 @@ export default function PastePage() {
       setError(null);
 
       try {
-        await new Promise((resolve) => setTimeout(resolve, 800));
+        const paste = await pasteService.getPaste(pasteId)
 
-        const fakePaste: Paste = {
-          id: pasteId,
-          content: `# Пример заметки с кодом
-
-Это демонстрационная заметка с ID: ${pasteId}
-
-## Код на JavaScript:
-\`\`\`javascript
-function helloWorld() {
-  console.log('Привет, TempPaste!');
-  
-  // Пример кода
-  const data = {
-    id: '${pasteId}',
-    timestamp: new Date().toISOString(),
-    content: 'Текст заметки'
-  };
-  
-  return data;
-}
-\`\`\`
-
-## Конфигурация:
-\`\`\`yaml
-database:
-  host: localhost
-  port: 5432
-  username: admin
-  password: ${"*".repeat(12)}
-  
-server:
-  port: 3000
-  ssl: true
-\`\`\`
-
-Эта заметка будет автоматически удалена через указанное время.`,
-          ttl: 60, // 1 час
-        };
-
-        setPaste(fakePaste);
+        setPaste(paste);
       } catch (err) {
         setError("Не удалось загрузить заметку");
         console.error(err);
@@ -80,7 +41,7 @@ server:
     if (!paste) return;
 
     navigator.clipboard
-      .writeText(paste.content)
+      .writeText(paste.text)
       .then(() => {
         alert("Содержимое скопировано в буфер обмена!");
       })
@@ -223,7 +184,7 @@ server:
             <div className="p-6">
               <div className="relative">
                 <pre className="text-temp-text whitespace-pre-wrap font-mono text-sm leading-relaxed overflow-x-auto">
-                  {paste.content}
+                  {paste.text}
                 </pre>
 
                 <div className="absolute bottom-4 right-4 pointer-events-none">
@@ -238,7 +199,7 @@ server:
                   <div className="text-temp-secondary">
                     Длина:{" "}
                     <span className="text-temp-primary">
-                      {paste.content.length}
+                      {paste.text.length}
                     </span>{" "}
                     символов
                   </div>
