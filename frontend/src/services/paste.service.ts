@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:8080";
+const BASE_URL = "http://155.212.184.111:8080";
 
 export interface CreatePasteRequest {
   text: string;
