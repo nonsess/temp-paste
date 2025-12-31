@@ -24,16 +24,18 @@ services:
       - NEXT_PUBLIC_API_URL=http://product-ready.ru/api/v1
     depends_on:
       - backend
-
-
   nginx:
     image: nginx:alpine
     ports:
       - "80:80"
+      - "443:443" 
     volumes:
       - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./certbot-challenge:/var/www/certbot:ro
+      - /etc/letsencrypt:/etc/letsencrypt:ro
     depends_on:
       - frontend
       - backend
 volumes:
   redis_data:
+  
