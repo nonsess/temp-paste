@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, forwardRef } from "react";
 
 interface TextInputProps {
   value: string;
@@ -11,9 +11,11 @@ interface TextInputProps {
   disabled?: boolean;
   error?: string;
   label?: string;
+  autoFocus?: boolean;
+  onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 
-export default function TextInput({
+const TextInput = forwardRef<HTMLInputElement, TextInputProps>(({
   value,
   onChange,
   minLength,
@@ -24,14 +26,24 @@ export default function TextInput({
   disabled = false,
   error,
   label,
-}: TextInputProps) {
+  autoFocus = false,
+  onKeyDown,
+}: TextInputProps, ref) => {
   const [inputValue, setInputValue] = useState(value);
   const [isFocused, setIsFocused] = useState(false);
-  const inputRef = useRef<HTMLInputElement>(null);
+  const internalRef = useRef<HTMLInputElement>(null);
+
+  const inputRef = (ref as React.RefObject<HTMLInputElement>) || internalRef;
 
   useEffect(() => {
     setInputValue(value);
   }, [value]);
+
+  useEffect(() => {
+    if (autoFocus && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [autoFocus]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value;
@@ -56,7 +68,11 @@ export default function TextInput({
     }
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyDownInternal = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (onKeyDown) {
+      onKeyDown(e);
+    }
+    
     if (e.key === "Enter") {
       e.preventDefault();
       inputRef.current?.blur();
@@ -88,7 +104,7 @@ export default function TextInput({
           onChange={handleChange}
           onFocus={handleFocus}
           onBlur={handleBlur}
-          onKeyDown={handleKeyDown}
+          onKeyDown={handleKeyDownInternal}
           placeholder={placeholder}
           disabled={disabled}
           minLength={minLength}
@@ -104,7 +120,6 @@ export default function TextInput({
             focus:outline-none focus:ring-2 focus:ring-temp-primary/50 focus:border-temp-primary
             transition-all duration-200
             ${disabled ? "opacity-50 cursor-not-allowed" : ""}
-            ${className}
           `}
         />
 
@@ -137,4 +152,8 @@ export default function TextInput({
       )}
     </div>
   );
-}
+});
+
+TextInput.displayName = "TextInput";
+
+export default TextInput;
