@@ -42,20 +42,20 @@ export default function HomePage() {
       const paste = await pasteService.createPaste({ text, ttl });
       router.push(`/pastes/${paste.id}`);
     } catch (error) {
-      console.error('Ошибка создания заметки:', error);
-      alert(error instanceof Error ? error.message : 'Неизвестная ошибка');
+      console.error("Ошибка создания заметки:", error);
+      alert(error instanceof Error ? error.message : "Неизвестная ошибка");
     }
   };
 
   const handlePasteIdChange = (value: string) => {
-    const filteredValue = value.replace(/[^a-zA-Z0-9]/g, '').toUpperCase();
+    const filteredValue = value.replace(/[^a-zA-Z0-9]/g, "").toUpperCase();
     setPasteIdInput(filteredValue);
     setSearchError("");
   };
 
   const handleSearchPaste = async () => {
     const pasteId = pasteIdInput.trim();
-    
+
     if (pasteId.length !== 6) {
       setSearchError("Код должен содержать 6 символов");
       return;
@@ -86,58 +86,69 @@ export default function HomePage() {
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold mb-3">
             <span className="bg-linear-to-r from-temp-primary via-temp-secondary to-temp-primary bg-clip-text text-transparent bg-size-[200%] animate-gradient">
-            Временные заметки
+              Временные заметки
             </span>
           </h2>
           <p className="text-lg text-temp-text/70 max-w-2xl mx-auto">
-          Создайте заметку, установите время жизни от 1 минуты до 24 часов, и она автоматически исчезнет. Без регистрации, анонимно, безопасно.
+            Создайте заметку, установите время жизни от 1 минуты до 24 часов, и
+            она автоматически исчезнет. Без регистрации, анонимно, безопасно.
           </p>
         </div>
 
         <div className="max-w-4xl mx-auto mb-12">
-            <div className="space-y-3">
-              <div className="space-y-1">
-                <div className="relative">
-                  <div className="flex items-center gap-1">
-                    <div className="relative flex-1">
-                      <TextInput
-                        ref={searchInputRef}
-                        value={pasteIdInput}
-                        onChange={handlePasteIdChange}
-                        onKeyDown={handleKeyDown}
-                        placeholder="Открыть по коду"
-                        maxLength={6}
-                        className="text-left font-mono tracking-wider"
-                      />
-                    </div>
-                    
-                    <Button
-                      variant="primary"
-                      onClick={handleSearchPaste}
-                      isLoading={isSearchLoading}
-                      disabled={pasteIdInput.length !== 6 || isSearchLoading}
-                      size="md"
-                      className="h-12"
-                    >
-                      Открыть
-                    </Button>
+          <div className="space-y-3">
+            <div className="space-y-1">
+              <div className="relative">
+                <div className="flex items-center gap-1">
+                  <div className="relative flex-1">
+                    <TextInput
+                      ref={searchInputRef}
+                      value={pasteIdInput}
+                      onChange={handlePasteIdChange}
+                      onKeyDown={handleKeyDown}
+                      placeholder="Открыть по коду"
+                      maxLength={6}
+                      className="text-left font-mono tracking-wider"
+                    />
                   </div>
-                </div>
 
-                {searchError && (
-                  <div className="text-center">
-                    <p className="text-red-400 text-xs flex items-center justify-center gap-1">
-                      <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                      </svg>
-                      {searchError}
-                    </p>
-                  </div>
-                )}
+                  <Button
+                    variant="primary"
+                    onClick={handleSearchPaste}
+                    isLoading={isSearchLoading}
+                    disabled={pasteIdInput.length !== 6 || isSearchLoading}
+                    size="md"
+                    className="h-12"
+                  >
+                    Открыть
+                  </Button>
+                </div>
               </div>
+
+              {searchError && (
+                <div className="text-center">
+                  <p className="text-red-400 text-xs flex items-center justify-center gap-1">
+                    <svg
+                      className="w-3 h-3"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                      />
+                    </svg>
+                    {searchError}
+                  </p>
+                </div>
+              )}
             </div>
+          </div>
         </div>
-        
+
         <div className="max-w-4xl mx-auto">
           <div className="bg-temp-dark/40 backdrop-blur-sm rounded-xl border border-temp-primary/15 p-6 md:p-7">
             <div className="grid md:grid-cols-3 gap-6 md:gap-8">
@@ -183,7 +194,7 @@ export default function HomePage() {
               </div>
             </div>
           </div>
-        </div>        
+        </div>
       </Container>
     </main>
   );

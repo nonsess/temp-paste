@@ -1,4 +1,4 @@
-const BASE_URL = "https://product-ready.ru";
+export const BASE_URL = "https://product-ready.ru";
 
 export interface CreatePasteRequest {
   text: string;
