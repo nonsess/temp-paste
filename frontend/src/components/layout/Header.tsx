@@ -38,7 +38,7 @@ export default function Header() {
 
           <div className="flex items-center gap-3">
             <a
-              href="https://github.com/yourusername/temppaste"
+              href="https://github.com/nonsess/temp-paste"
               target="_blank"
               rel="noopener noreferrer"
               className="px-4 py-2 text-sm text-temp-text/80 hover:text-temp-primary rounded-lg hover:bg-temp-dark/50 transition-all duration-200 flex items-center gap-1"
