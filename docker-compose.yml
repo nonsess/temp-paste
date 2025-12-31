@@ -20,10 +20,9 @@ services:
   frontend:
     build:
       context: ./frontend
-    environment:
-      - NEXT_PUBLIC_API_URL=http://product-ready.ru/api/v1
     depends_on:
       - backend
+
   nginx:
     image: nginx:alpine
     ports:
@@ -36,6 +35,6 @@ services:
     depends_on:
       - frontend
       - backend
+
 volumes:
   redis_data:
-  
