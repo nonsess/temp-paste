@@ -48,7 +48,7 @@ export default function HomePage() {
   };
 
   const handlePasteIdChange = (value: string) => {
-    const filteredValue = value.replace(/[^a-zA-Z0-9]/g, "").toUpperCase();
+    const filteredValue = value.replace(/[^a-zA-Z0-9]/g, "");
     setPasteIdInput(filteredValue);
     setSearchError("");
   };
