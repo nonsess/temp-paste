@@ -23,10 +23,6 @@ services:
         condition: service_healthy
     env_file:
       - .env
-    environment:
-      - REDIS_HOST=${REDIS_HOST}
-      - REDIS_PORT=${REDIS_PORT}
-      - REDIS_PASSWORD=${REDIS_PASSWORD}
 
   frontend:
     build:
