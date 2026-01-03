@@ -18,14 +18,14 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd /projects/temp-paste
+            cd /root/projects/temp-paste
             echo "🔄 Pulling latest code..."
             git pull origin main
 
             echo "🛑 Stopping services..."
-            docker-compose down
+            docker compose down
 
             echo "📦 Building and starting services..."
-            docker-compose up --build -d
+            docker compose up --build -d
 
             echo "✅ Deploy completed!"
