@@ -28,7 +28,7 @@ export default function Header() {
                       TempPaste
                     </h1>
                     <p className="text-xs text-temp-secondary/70 -mt-0.5 group-hover:text-temp-secondary transition-colors">
-                      Сохрани и забудь
+                      Сохрани и забудь!
                     </p>
                   </div>
                 </div>
