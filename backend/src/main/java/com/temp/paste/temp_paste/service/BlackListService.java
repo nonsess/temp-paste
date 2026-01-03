@@ -50,15 +50,14 @@ public class BlackListService {
         }
 
         String censoredText = text;
-        // Работаем с копией в нижнем регистре только для проверки .contains()
+        // Приводим весь текст к нижнему регистру ОДИН РАЗ для быстрой проверки
         String lowerText = text.toLowerCase();
 
         for (String word : forbiddenWords) {
-            // Сначала быстро проверяем, есть ли вообще это слово в тексте
+            // word уже в нижнем регистре (мы сделали это в loadWords)
             if (lowerText.contains(word)) {
-                // Если есть, заменяем его в оригинальном тексте, игнорируя регистр
-                // (?i) — флаг case-insensitive, Pattern.quote — защита от спецсимволов
-                censoredText = censoredText.replaceAll("(?i)" + Pattern.quote(word), "***");
+                // (?iu) -> i = ignore case, u = unicode case (обязательно для русского языка)
+                censoredText = censoredText.replaceAll("(?iu)" + Pattern.quote(word), "***");
             }
         }
         return censoredText;
