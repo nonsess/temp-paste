@@ -18,6 +18,8 @@ services:
     build:
       context: ./backend
     container_name: backend
+    volumes:
+      - /home/deploy/blacklist.txt:/app/blacklist.txt
     depends_on:
       redis:
         condition: service_healthy
