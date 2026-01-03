@@ -1,3 +1,5 @@
 .env
 /certbot-challenge
 /.idea
+docker-compose.override.yml
+nginx.prod.conf
