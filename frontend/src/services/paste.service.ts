@@ -1,5 +1,3 @@
-export const BASE_URL = "https://product-ready.ru";
-
 export interface CreatePasteRequest {
   text: string;
   ttl: number;
@@ -13,7 +11,7 @@ export interface PasteResponse {
 
 class PasteService {
   async createPaste(data: CreatePasteRequest): Promise<PasteResponse> {
-    const response = await fetch(`${BASE_URL}/api/v1/pastes`, {
+    const response = await fetch("/api/v1/pastes", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -29,7 +27,7 @@ class PasteService {
   }
 
   async getPaste(pasteId: string): Promise<PasteResponse> {
-    const response = await fetch(`${BASE_URL}/api/v1/pastes/${pasteId}`);
+    const response = await fetch(`/api/v1/pastes/${pasteId}`);
 
     if (!response.ok) {
       if (response.status === 404) {
