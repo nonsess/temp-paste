@@ -18,24 +18,32 @@ public class PasteService {
 
     private final StringRedisTemplate stringRedisTemplate;
     private final ObjectMapper objectMapper;
+    private final BlackListService blackListService;
 
     private String redisPrefix = "paste:";
     private Integer lenghtOfPaste = 6;
 
-    public PasteService(StringRedisTemplate stringRedisTemplate, ObjectMapper objectMapper) {
+    public PasteService(StringRedisTemplate stringRedisTemplate, ObjectMapper objectMapper, BlackListService blackListService) {
         this.stringRedisTemplate = stringRedisTemplate;
         this.objectMapper = objectMapper;
+        this.blackListService = blackListService;
     }
 
     public Paste save(PasteRequest paste) {
+        String cleanText = blackListService.censor(paste.text());
         String id;
         do {
             id = IdGenerator.generate(lenghtOfPaste);
         } while ((Boolean.TRUE.equals(stringRedisTemplate.hasKey(redisPrefix + id))));
 
-        Paste newPaste = new Paste(id, paste.text(), paste.ttl());
+        Paste newPaste = new Paste(id, cleanText, paste.ttl());
 
-        String json = objectMapper.writeValueAsString(newPaste);
+        String json;
+        try {
+            json = objectMapper.writeValueAsString(newPaste);
+        } catch(Exception e) {
+            throw new PasteSerializationException("Failed to serialize paste to json", e);
+        }
 
         stringRedisTemplate.opsForValue().set(
                 redisPrefix + newPaste.getId(),
