@@ -118,12 +118,14 @@ export default function PastePage() {
 
   if (isLoading) {
     return (
-      <main className="min-h-screen py-8">
+      <main className="min-h-screen py-12">
         <Container>
-          <div className="max-w-4xl mx-auto">
-            <div className="text-center">
-              <div className="inline-block animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-temp-primary mb-4"></div>
-              <p className="text-temp-text/70">Загрузка заметки...</p>
+          <div className="max-w-2xl mx-auto">
+            <div className="bg-temp-dark/50 backdrop-blur-sm rounded-2xl border border-temp-primary/20 py-12 px-6 text-center">
+              <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-temp-primary/10 mb-4">
+                <div className="animate-spin rounded-full h-6 w-6 border-t-2 border-b-2 border-temp-primary"></div>
+              </div>
+              <p className="text-temp-text/80">Загрузка заметки...</p>
             </div>
           </div>
         </Container>
@@ -133,13 +135,13 @@ export default function PastePage() {
 
   if (error || !paste) {
     return (
-      <main className="min-h-screen py-8">
+      <main className="min-h-screen py-12">
         <Container>
-          <div className="max-w-4xl mx-auto text-center">
-            <div className="mb-6">
-              <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-red-500/10 mb-4">
+          <div className="max-w-2xl mx-auto">
+            <div className="bg-temp-dark/50 backdrop-blur-sm rounded-2xl border border-temp-primary/20 py-12 px-6 text-center">
+              <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-temp-primary/10 mb-5">
                 <svg
-                  className="w-8 h-8 text-red-500"
+                  className="w-6 h-6 text-temp-primary"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -148,15 +150,16 @@ export default function PastePage() {
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     strokeWidth={2}
-                    d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4.5c-.77-.833-1.964-.833-2.732 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z"
                   />
                 </svg>
               </div>
-              <h2 className="text-2xl font-bold text-temp-text mb-2">
+              <h2 className="text-2xl font-bold text-temp-text mb-3">
                 Заметка не найдена
               </h2>
-              <p className="text-temp-text/70 mb-6">
-                {error || "Заметка с таким ID не существует или была удалена"}
+              <p className="text-temp-text/80 mb-6 max-w-md mx-auto">
+                {error ||
+                  "Заметка могла быть удалена автоматически (TTL истёк) или ID некорректен."}
               </p>
               <Button variant="primary" onClick={() => router.push("/")}>
                 Создать новую заметку
