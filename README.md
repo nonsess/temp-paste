@@ -2,11 +2,23 @@
 
 Удобный веб-инструмент для быстрого обмена текстом и кодом. Создавайте заметки, устанавливайте время жизни и делитесь короткими ссылками.
 
-**Стек технологий:**
-* **Frontend:** Next.js (React), Tailwind CSS
-* **Backend:** Java 21, Spring Boot 3.4
-* **Database:** Redis (для быстрого хранения и авто-удаления по TTL)
-* **DevOps:** Docker, Docker Compose, Nginx, Github Actions
+## Технологии
+
+### Frontend
+[![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=next.js&logoColor=white)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
+[![Biome](https://img.shields.io/badge/Biome-F7D748?style=for-the-badge&logo=biome&logoColor=black)](https://biomejs.dev/)
+
+### Backend
+[![Java](https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)](https://openjdk.org/)
+[![Spring Boot](https://img.shields.io/badge/Spring_Boot-6DB33F?style=for-the-badge&logo=spring-boot&logoColor=white)](https://spring.io/projects/spring-boot)
+[![Redis](https://img.shields.io/badge/Redis-DC382D?style=for-the-badge&logo=redis&logoColor=white)](https://redis.io/)
+
+### Инфраструктура
+[![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://www.docker.com/)
+[![Nginx](https://img.shields.io/badge/Nginx-009639?style=for-the-badge&logo=nginx&logoColor=white)](https://nginx.org/)
+[![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-2088FF?style=for-the-badge&logo=github-actions&logoColor=white)](https://github.com/features/actions)
 
 Публичная версия: https://product-ready.ru
 
