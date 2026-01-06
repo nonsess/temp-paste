@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Container from "@/components/layout/Container";
 import Button from "@/components/ui/Button";
-import { PasteResponse, pasteService } from "@/services/paste.service";
+import { PasteResponse } from "@/services/paste.service";
 import QRCode from "react-qr-code";
 import { formatDetailed } from "@/libs/time";
 
