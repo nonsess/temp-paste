@@ -30,24 +30,64 @@ export default function PastePage() {
       : `/pastes/${pasteId}`;
 
   useEffect(() => {
+    if (!pasteId) return;
+
+    let isMounted = true;
+    let intervalId: NodeJS.Timeout | null = null;
+
     const fetchPaste = async () => {
       setIsLoading(true);
       setError(null);
 
       try {
         const paste = await pasteService.getPaste(pasteId);
-        setPaste(paste);
+        if (isMounted) {
+          setPaste(paste);
+        }
       } catch (err) {
-        setError("Не удалось загрузить заметку");
-        console.error(err);
+        if (isMounted) {
+          setError("Не удалось загрузить заметку");
+          console.error(err);
+        }
       } finally {
-        setIsLoading(false);
+        if (isMounted) {
+          setIsLoading(false);
+        }
       }
     };
 
-    if (pasteId) {
-      fetchPaste();
-    }
+    const startPolling = () => {
+      intervalId = setInterval(async () => {
+        try {
+          const response = await fetch(`/api/v1/pastes/${pasteId}`);
+          if (!response.ok && response.status === 404) {
+            if (intervalId) {
+              clearInterval(intervalId);
+              intervalId = null;
+            }
+            if (isMounted) {
+              setPaste(null);
+              setError("Заметка была автоматически удалена");
+            }
+          }
+        } catch (err) {
+          console.warn("Polling error (ignored):", err);
+        }
+      }, 30_000);
+    };
+
+    fetchPaste().then(() => {
+      if (isMounted && pasteId) {
+        startPolling();
+      }
+    });
+
+    return () => {
+      isMounted = false;
+      if (intervalId) {
+        clearInterval(intervalId);
+      }
+    };
   }, [pasteId]);
 
   const handleCopyContent = () => {
