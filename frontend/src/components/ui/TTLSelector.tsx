@@ -54,7 +54,7 @@ export default function TTLSelector({
                 key={preset.value}
                 onClick={() => handlePresetClick(preset.value)}
                 className={`
-                  px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200
+                  px-4 py-2 cursor-pointer rounded-lg text-sm font-medium transition-all duration-200
                   ${
                     isActive
                       ? `bg-linear-to-r ${preset.color} text-temp-dark shadow-lg scale-105`
