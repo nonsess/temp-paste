@@ -9,6 +9,13 @@ import QRCode from "react-qr-code";
 import { formatDetailed } from "@/libs/time";
 
 export default function PastePage() {
+  const [copyTextStatus, setCopyTextStatus] = useState<"idle" | "copied">(
+    "idle",
+  );
+  const [copyLinkStatus, setCopyLinkStatus] = useState<"idle" | "copied">(
+    "idle",
+  );
+
   const params = useParams();
   const router = useRouter();
   const pasteId = params.paste_id as string;
@@ -49,7 +56,8 @@ export default function PastePage() {
     navigator.clipboard
       .writeText(paste.text)
       .then(() => {
-        alert("Содержимое скопировано в буфер обмена!");
+        setCopyTextStatus("copied");
+        setTimeout(() => setCopyTextStatus("idle"), 2000);
       })
       .catch((err) => {
         console.error("Не удалось скопировать:", err);
@@ -60,7 +68,8 @@ export default function PastePage() {
     navigator.clipboard
       .writeText(fullPasteUrl)
       .then(() => {
-        alert("Ссылка скопирована в буфер обмена!");
+        setCopyLinkStatus("copied");
+        setTimeout(() => setCopyLinkStatus("idle"), 2000);
       })
       .catch((err) => {
         console.error("Не удалось скопировать ссылку:", err);
@@ -170,7 +179,9 @@ export default function PastePage() {
                       </svg>
                     }
                   >
-                    Копировать текст
+                    {copyTextStatus === "copied"
+                      ? "Текст скопирован"
+                      : "Копировать текст"}
                   </Button>
 
                   <Button
@@ -193,7 +204,9 @@ export default function PastePage() {
                       </svg>
                     }
                   >
-                    Копировать ссылку
+                    {copyLinkStatus === "copied"
+                      ? "Ссылка скопирована"
+                      : "Копировать ссылку"}
                   </Button>
                 </div>
               </div>
