@@ -19,7 +19,7 @@ services:
       context: ./backend
     container_name: backend
     volumes:
-      - ./blacklist.txt:/app/blacklist.txt
+      - ./blacklist.txt:/app/blacklist.txt:ro
     depends_on:
       redis:
         condition: service_healthy
