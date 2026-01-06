@@ -30,63 +30,37 @@ export default function PastePage() {
       : `/pastes/${pasteId}`;
 
   useEffect(() => {
-    if (!pasteId) return;
+    if (!pasteId || !paste) return;
 
-    let isMounted = true;
-    let intervalId: NodeJS.Timeout | null = null;
-
-    const fetchPaste = async () => {
-      setIsLoading(true);
-      setError(null);
-
-      try {
-        const paste = await pasteService.getPaste(pasteId);
-        if (isMounted) {
-          setPaste(paste);
-        }
-      } catch (err) {
-        if (isMounted) {
-          setError("Не удалось загрузить заметку");
-          console.error(err);
-        }
-      } finally {
-        if (isMounted) {
-          setIsLoading(false);
-        }
-      }
+    const getPollingInterval = (ttlMinutes: number): number => {
+      if (ttlMinutes <= 5) return 10_000;
+      if (ttlMinutes <= 30) return 20_000;
+      if (ttlMinutes <= 120) return 45_000;
+      return 120_000;
     };
+
+    const intervalMs = getPollingInterval(paste.ttl);
+    let intervalId: NodeJS.Timeout | null = null;
 
     const startPolling = () => {
       intervalId = setInterval(async () => {
         try {
           const response = await fetch(`/api/v1/pastes/${pasteId}`);
           if (!response.ok && response.status === 404) {
-            if (intervalId) {
-              clearInterval(intervalId);
-              intervalId = null;
-            }
-            if (isMounted) {
-              setPaste(null);
-              setError("Заметка была автоматически удалена");
-            }
+            if (intervalId) clearInterval(intervalId);
+            setPaste(null);
+            setError("Она была автоматически удалена");
           }
         } catch (err) {
           console.warn("Polling error (ignored):", err);
         }
-      }, 30_000);
+      }, intervalMs);
     };
 
-    fetchPaste().then(() => {
-      if (isMounted && pasteId) {
-        startPolling();
-      }
-    });
+    startPolling();
 
     return () => {
-      isMounted = false;
-      if (intervalId) {
-        clearInterval(intervalId);
-      }
+      if (intervalId) clearInterval(intervalId);
     };
   }, [pasteId]);
 
@@ -159,7 +133,7 @@ export default function PastePage() {
               </h2>
               <p className="text-temp-text/80 mb-6 max-w-md mx-auto">
                 {error ||
-                  "Заметка могла быть удалена автоматически (TTL истёк) или ID некорректен."}
+                  "Она могла быть удалена автоматически или ее не существовало."}
               </p>
               <Button variant="primary" onClick={() => router.push("/")}>
                 Создать новую заметку
