@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Container from "@/components/layout/Container";
 import Button from "@/components/ui/Button";
-import { PasteResponse } from "@/services/paste.service";
+import { PasteResponse, pasteService } from "@/services/paste.service";
 import QRCode from "react-qr-code";
 import { formatDetailed } from "@/libs/time";
 
@@ -30,6 +30,26 @@ export default function PastePage() {
       : `/pastes/${pasteId}`;
 
   useEffect(() => {
+    if (!pasteId) return;
+
+    const fetchPaste = async () => {
+      setIsLoading(true);
+      setError(null);
+      try {
+        const paste = await pasteService.getPaste(pasteId);
+        setPaste(paste);
+      } catch (err) {
+        setError("Не удалось загрузить заметку");
+        console.error(err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchPaste();
+  }, [pasteId]);
+
+  useEffect(() => {
     if (!pasteId || !paste) return;
 
     const getPollingInterval = (ttlMinutes: number): number => {
@@ -45,14 +65,13 @@ export default function PastePage() {
     const startPolling = () => {
       intervalId = setInterval(async () => {
         try {
-          const response = await fetch(`/api/v1/pastes/${pasteId}`);
-          if (!response.ok && response.status === 404) {
+          await pasteService.getPaste(pasteId);
+        } catch (err) {
+          if (err instanceof Error && err.message === "Заметка не найдена") {
             if (intervalId) clearInterval(intervalId);
             setPaste(null);
             setError("Она была автоматически удалена");
           }
-        } catch (err) {
-          console.warn("Polling error (ignored):", err);
         }
       }, intervalMs);
     };
@@ -62,8 +81,7 @@ export default function PastePage() {
     return () => {
       if (intervalId) clearInterval(intervalId);
     };
-  }, [pasteId]);
-
+  }, [pasteId, paste?.ttl]);
   const handleCopyContent = () => {
     if (!paste) return;
 
