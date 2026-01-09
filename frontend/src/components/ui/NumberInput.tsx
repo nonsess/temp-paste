@@ -102,7 +102,7 @@ export default function NumberInput({
           onClick={handleDecrement}
           onMouseDown={(e) => e.preventDefault()}
           disabled={value <= min}
-          className="p-3 text-temp-secondary hover:text-temp-primary hover:bg-temp-dark/50 disabled:text-gray-500 disabled:hover:bg-transparent disabled:cursor-not-allowed transition-colors rounded-l-xl"
+          className="p-3 cursor-pointer text-temp-secondary hover:text-temp-primary hover:bg-temp-dark/50 disabled:text-gray-500 disabled:hover:bg-transparent disabled:cursor-not-allowed transition-colors rounded-l-xl"
           aria-label="Уменьшить"
         >
           <svg
@@ -151,7 +151,7 @@ export default function NumberInput({
           onClick={handleIncrement}
           onMouseDown={(e) => e.preventDefault()}
           disabled={value >= max}
-          className="p-3 text-temp-secondary hover:text-temp-primary hover:bg-temp-dark/50 disabled:text-gray-500 disabled:hover:bg-transparent disabled:cursor-not-allowed transition-colors rounded-r-xl"
+          className="p-3 cursor-pointer text-temp-secondary hover:text-temp-primary hover:bg-temp-dark/50 disabled:text-gray-500 disabled:hover:bg-transparent disabled:cursor-not-allowed transition-colors rounded-r-xl"
           aria-label="Увеличить"
         >
           <svg
