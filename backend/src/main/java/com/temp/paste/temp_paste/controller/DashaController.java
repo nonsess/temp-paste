@@ -21,12 +21,11 @@ public class DashaController {
 
     @GetMapping("/g")
     public String sendDanger() {
-        return sendMessage("⚠️ ШУХЕР! ПРЕПОД РЯДОМ, НЕ ПИШИ!");
+        return sendMessage("⚠️ НЕ ПИШИ!");
     }
 
     private String sendMessage(String text) {
         try {
-            // Создаем URI объект. .build().toUri() — это ключевой момент!
             URI uri = UriComponentsBuilder
                     .fromUri(URI.create("https://api.telegram.org/bot" + BOT_TOKEN + "/sendMessage"))
                     .queryParam("chat_id", CHAT_ID)
