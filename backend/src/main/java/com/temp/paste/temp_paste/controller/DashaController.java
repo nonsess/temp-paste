@@ -26,16 +26,19 @@ public class DashaController {
 
     private String sendMessage(String text) {
         try {
-            String url = UriComponentsBuilder
+            // Создаем URI объект. .build().toUri() — это ключевой момент!
+            URI uri = UriComponentsBuilder
                     .fromUri(URI.create("https://api.telegram.org/bot" + BOT_TOKEN + "/sendMessage"))
                     .queryParam("chat_id", CHAT_ID)
                     .queryParam("text", text)
-                    .toUriString();
+                    .build()
+                    .toUri();
 
-            restTemplate.getForObject(url, String.class);
-            return "Message sent: " + text;
+            // Передаем именно uri, а не строку
+            restTemplate.getForObject(uri, String.class);
+            return "Отправлено: " + text;
         } catch (Exception e) {
-            return "Error: " + e.getMessage();
+            return "Ошибка: " + e.getMessage();
         }
     }
 }
