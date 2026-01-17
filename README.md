@@ -20,7 +20,7 @@
 [![Nginx](https://img.shields.io/badge/Nginx-009639?style=for-the-badge&logo=nginx&logoColor=white)](https://nginx.org/)
 [![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-2088FF?style=for-the-badge&logo=github-actions&logoColor=white)](https://github.com/features/actions)
 
-Публичная версия: https://product-ready.ru
+Публичная версия: https://temp.product-ready.ru
 
 ### ⚠️ Безопасность:
 
